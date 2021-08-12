@@ -45,7 +45,7 @@ spec:
           resources:
             {{- toYaml .Values.resourcesknoxautopolicy | nindent 12 }}  
           ports:
-            {{- toYaml .Values.containerPortknoxautopolicy | nindent 12 }}
+            {{- toYaml .Values.ContainerPortknoxautopolicy | nindent 12 }}
           # livenessProbe:
           #   httpGet:
           #     path: /
