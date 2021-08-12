@@ -1,0 +1,8 @@
+{{- if .Values.persistentVolumeClaim.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: {{ .Values.persistentVolumeClaim.name}}  
+spec:
+{{- toYaml .Values.persistentVolumeClaim.spec | nindent 8 }}
+{{- end }} 

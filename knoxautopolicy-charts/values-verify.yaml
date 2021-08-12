@@ -1,0 +1,141 @@
+# Default values for knoxautopolicy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+knoxautopolicyimage:
+  repository: agents.accuknox.com/repository/docker-verify/knoxautopolicy
+  tag: ""
+  pullPolicy: Always
+
+#labels
+labels:
+  environment: dev
+  app: knoxautopolicy
+
+#deployment name
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+#rolling update 
+type: RollingUpdate
+maxSurge: 0
+maxUnavailable: 1
+minReadySeconds: 5
+revisionHistoryLimit: 10 
+
+#ServiceAccount
+serviceAccount: {}
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+#securityContext knoxautopolicy
+securityContextknoxautopolicy: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+#service
+service:
+  enabled: false
+  type: ClusterIP
+  port: 443
+  targetPort: 8080
+  protocol: TCP
+  name: knoxautopolicy
+
+serviceExternal:
+  enabled: false
+
+#ingress Layer 7 certificate Loadbalancer      
+ingress:
+  enabled: false
+
+#Configmap knoxautopolicy
+configmapknoxautopolicy:
+  name: knoxautopolicy-verify-config
+  enabled: true
+  app: configmapfiles/veify/knoxautopolicy/config.yaml
+
+#Secrets knoxautopolicy
+secretsknoxautopolicy:
+  name: agent-creds
+  enabled: true
+  type: kubernetes.io/dockerconfigjson
+  dockerconfig: "secretfiles/verify/knoxautopolicy/dockerconfigjson"
+
+#Secrets knoxautopolicy
+secretknoxautopolicy:
+  name: dp-event-forwarder-kafka-ssl
+  enabled: true
+  ca: "kafka-secretfiles/verify/knoxautopolicy/ca.pem"
+  user: "kafka-secretfiles/verify/knoxautopolicy/user.p12"
+
+#Volumes
+volumesknoxautopolicy:
+- name: knoxautopolicy-config-volume
+  configMap:
+    name: knoxautopolicy-verify-config
+    defaultMode: 0744
+
+- name: knoxautopolicy-kafka-ssl-secret-volume
+  secret:
+    secretName: knoxautopolicy-kafka-ssl
+
+#knoxautopolicy Volume-Mounts 
+volumemountsknoxautopolicy:
+- name: knoxautopolicy-config-volume
+  mountPath: /conf/conf.yaml
+  subPath: conf.yaml
+- name: knoxautopolicy-kafka-ssl-volume  
+  mountPath: /kafka-ssl
+
+- name: knoxautopolicy-kafka-ssl-secret-volume
+  mountPath: /conf/kafka-ssl/ca.pem
+  subPath: ca.pem
+
+- name: knoxautopolicy-kafka-ssl-secret-volume
+  mountPath: /conf/kafka-ssl/user.p12
+  subPath: user.p12
+
+#knoxautopolicy Resources
+resourcesknoxautopolicy:
+  limits:
+    cpu: 400m
+    memory: 450Mi
+  requests:
+    cpu: 200m
+    memory: 250Mi
+
+#persistentVolumeClaim 
+persistentVolumeClaim:
+  enabled: false
+  name: knoxautopolicy
+  spec:
+    storageClassName: standard
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 50Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 75
+  targetMemoryUtilizationPercentage: 75
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

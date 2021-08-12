@@ -15,8 +15,8 @@
 
 #***********************************************************************************************************************************#
 # Docker_build stage builds the docker image from the Dockerfile
-#Docker build mention the name for docker build. specify the dockerfile dirctory where Dockerfile was stored
-#Mention Dockerfile name and tag for build
+# Docker build mention the name for docker build. specify the dockerfile dirctory where Dockerfile was stored
+# Mention Dockerfile name and tag for build
 #***********************************************************************************************************************************#
 
 docker_build:
@@ -38,9 +38,9 @@ image_properties:
      cred: 'accunoxwithnexus'
 
 #***********************************************************************************************************************************#
-#if we need to scan the image with trivy change the status: enable: "true" if need to disable the scan change this to "false" 
-#Mention the level of scan is mandatory Acceptable Values are CRITICAL, HIGH, MEDIUM, LOW
-#pass the artifactory trivyimage for the process
+# if we need to scan the image with trivy change the status: enable: "true" if need to disable the scan change this to "false" 
+# Mention the level of scan is mandatory Acceptable Values are CRITICAL, HIGH, MEDIUM, LOW
+# pass the artifactory trivyimage for the process
 #***********************************************************************************************************************************#
 trivy_properties:
    status:
@@ -53,10 +53,10 @@ trivy_properties:
        docker_run_params:  --entrypoint='' -v /var/run/docker.sock:/var/run/docker.sock -v /root/.cache/:/root/.cache/
 
 #***********************************************************************************************************************************#
-#if we need to scan the image with clair change the status: enable: "true" if need to disable the scan change this to "false" 
-#Mention the level of scan is mandatory Acceptable Values are CRITICAL, HIGH, MEDIUM, LOW
-#pass the clair service url
-#pass the artifactory clair cli image to access clair scanner
+# if we need to scan the image with clair change the status: enable: "true" if need to disable the scan change this to "false" 
+# Mention the level of scan is mandatory Acceptable Values are CRITICAL, HIGH, MEDIUM, LOW
+# pass the clair service url
+# pass the artifactory clair cli image to access clair scanner
 #***********************************************************************************************************************************#
 clair_properties:
    status:
@@ -74,9 +74,9 @@ slack_properties:
    slack_url: https://hooks.slack.com/services/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
 
 #***********************************************************************************************************************************#
-#if we need to scan the image with anchore change the status: enable: "true" if need to disable the scan change this to "false" 
-#Pass the anchore cli artifactory image
-#pass the anchore engine user name, password and engine url
+# if we need to scan the image with anchore change the status: enable: "true" if need to disable the scan change this to "false" 
+# Pass the anchore cli artifactory image
+# pass the anchore engine user name, password and engine url
 #***********************************************************************************************************************************#
 anchore_properties:
   status:
@@ -90,8 +90,8 @@ anchore_properties:
       anchore.url: "http://jmslave01.accuknox.com:8228/v1/"
 
 #***********************************************************************************************************************************#
-#Pass the sonarqube name and sonarrunner name which is configured in Managed-Jenkins.
-#qualitygate_timeout is the maximum timeout of qualitygate to 10 Min#
+# Pass the sonarqube name and sonarrunner name which is configured in Managed-Jenkins.
+# qualitygate_timeout is the maximum timeout of qualitygate to 10 Min#
 #***********************************************************************************************************************************#
 sonar_properties:
   status:
@@ -107,10 +107,10 @@ sonar_properties:
       name: artifactory.accuknox.com/accuknox/sonar-scanner-cli:latest
       docker_run_params:  -v /usr/local/bin:/usr/local/bin
 #**********************************************************************************************************************************#
-#Below sonar_conf containts properties section to run Sonar,
-#Mention project key and name which was created in sonarqube server
-#Mention the Host url where the sonar server is running
-#for sonar credentials use username/API Token combo which was created in jenkins manage credentials.
+# Below sonar_conf containts properties section to run Sonar,
+# Mention project key and name which was created in sonarqube server
+# Mention the Host url where the sonar server is running
+# for sonar credentials use username/API Token combo which was created in jenkins manage credentials.
 #**********************************************************************************************************************************#
   sonar_conf:
   -   sonar.projectKey: knoxAutoPolicy
@@ -128,8 +128,8 @@ sonar_properties:
 
 #***********************************************************************************************************************************#
 # Lints and package the helm chart
-#helm build mention the name for helm build. specify the helm image and docker parameter to run the helm docker
-#Mention helm dir and tag for build
+# helm build mention the name for helm build. specify the helm image and docker parameter to run the helm docker
+# Mention helm dir and tag for build
 #***********************************************************************************************************************************#
 helm_build:
   - name: Helm-Build
@@ -145,8 +145,8 @@ helm_build:
 
 #***********************************************************************************************************************************#
 # publish docker image, helmchart and artifacts to specified artifactory locations
-#for artifactory credentials use username/API Token combo which was created in jenkins manage credentials.
-#Pass the repostiry url for docker helm and artifacts where images need to push
+# for artifactory credentials use username/API Token combo which was created in jenkins manage credentials.
+# Pass the repostiry url for docker helm and artifacts where images need to push
 #***********************************************************************************************************************************#
 publish_config:
     publish_nexus_credentials: "agentswithnexus"
@@ -187,7 +187,7 @@ argocd:
   #               Argocd Configuration for dev Environment.
   #*********************************************************************************************#
   enable: true
-  dev: 
+  development: 
     server: "argocd-dev.accuknox.com"                  #Argocd server name or url
     credentials: "argocdcred"                          #Credentials for Argocd
     application_name: "accuknox-dev-knoxautopolicy"    #Application name to create

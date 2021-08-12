@@ -1,0 +1,10 @@
+{{- if .Values.configmapknoxautopolicy.enabled -}}
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: {{ .Values.configmapknoxautopolicy.name}} 
+  labels:
+{{ toYaml .Values.labels | indent 4 }}
+data: 
+    conf.yaml: {{ tpl (.Files.Get  .Values.configmapknoxautopolicy.app) . | quote }}
+{{- end }}

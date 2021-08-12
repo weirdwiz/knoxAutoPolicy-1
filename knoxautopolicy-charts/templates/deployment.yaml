@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.labels.app }}
+  labels:
+{{ toYaml .Values.labels | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.app }}
+  strategy:
+    type: {{ .Values.type }}
+    rollingUpdate:
+      maxSurge: {{ .Values.maxSurge }}
+      maxUnavailable: {{ .Values.maxUnavailable }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  template:
+    metadata:
+      labels:
+{{ toYaml .Values.labels | indent 8 }}  
+      annotations:
+        checksum.helm.kubernetes.io/configmap: {{ include (print $.Chart.Name "/templates/configmap-knoxautopolicy.yaml") . | sha256sum }}
+        checksum.helm.kubernetes.io/secret: {{ include (print $.Chart.Name "/templates/kafka-secret.yaml") . | sha256sum }}
+        checksum.helm.kubernetes.io/secret: {{ include (print $.Chart.Name "/templates/secret.yaml") . | sha256sum }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- toYaml .Values.volumesknoxautopolicy | nindent 10 }}
+      containers:
+        - name: {{ .Values.labels.app }}
+          securityContext:
+            {{- toYaml .Values.securityContextknoxautopolicy | nindent 12 }}
+          image: "{{ .Values.knoxautopolicyimage.repository }}:{{ .Values.knoxautopolicyimage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.knoxautopolicyimage.pullPolicy }}
+          volumeMounts:
+            {{- toYaml .Values.volumemountsknoxautopolicy | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resourcesknoxautopolicy | nindent 12 }}  
+          ports:
+            {{- toYaml .Values.containerPortknoxautopolicy | nindent 12 }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
