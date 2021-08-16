@@ -78,7 +78,7 @@ secretsknoxautopolicy:
 
 #Secrets knoxautopolicy
 secretknoxautopolicy:
-  name: dp-event-forwarder-kafka-ssl
+  name: knoxautopolicy-kafka-ssl
   enabled: true
   ca: "kafka-secretfiles/verify/knoxautopolicy/ca.pem"
   user: "kafka-secretfiles/verify/knoxautopolicy/user.p12"
