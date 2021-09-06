@@ -1,6 +1,7 @@
-@Library('accuknox-shared-library@dev-build-security-gcr') _
+@Library('accuknox-shared-library@master') _
 pipelineExecute app_config: 'resources/build-info.yaml',
+snapshot_branch: "AK",
 dev_branch: "development",
 verify_branch: "verify",
-prod_branch: "production",
+prod_branch: "prod",
 jenkins_node_label: "jenkins-slave-02"

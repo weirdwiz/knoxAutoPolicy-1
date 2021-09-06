@@ -11,7 +11,7 @@ knoxautopolicyimage:
 
 #labels
 labels:
-  environment: dev
+  environment: verify
   app: knoxautopolicy
 
 #deployment name

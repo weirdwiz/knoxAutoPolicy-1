@@ -183,10 +183,24 @@ deploy_config:
 # Contains argocd properties for deploying applications using argocd.  
 #*******************************************************************************************************************************#
 argocd:
+  enable: true
+
+  #*********************************************************************************************#
+  #               Argocd Configuration for snapshot Environment.
+  #*********************************************************************************************#
+  snapshot: 
+    server: "argocd-dev.accuknox.com"                  #Argocd server name or url
+    credentials: "argocdcred"                          #Credentials for Argocd
+    application_name: "accuknox-dev-knoxautopolicy"    #Application name to create
+    namespace: "accuknox-dev-knoxautopolicy"           #Namespace to where the application to be deployed
+    project: "useronboarding"                          #specify poject name in argocd
+    cluster:
+      project: "mimetic-kit-294408"                    #Kubernetes project name
+      name: "accuknox-saas-dev"                        #Kubernetes cluster name
+      region: "us-central1-c"                          #Kubernetes cluster Region
   #*********************************************************************************************#
   #               Argocd Configuration for dev Environment.
   #*********************************************************************************************#
-  enable: true
   development: 
     server: "argocd-dev.accuknox.com"                  #Argocd server name or url
     credentials: "argocdcred"                          #Credentials for Argocd
