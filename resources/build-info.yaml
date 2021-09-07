@@ -183,7 +183,6 @@ deploy_config:
 # Contains argocd properties for deploying applications using argocd.  
 #*******************************************************************************************************************************#
 argocd:
-  enable: true
 
   #*********************************************************************************************#
   #               Argocd Configuration for snapshot Environment.
